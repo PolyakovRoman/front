@@ -25,16 +25,14 @@ var path = {
     src: { //Пути откуда брать исходники
         html: 'src/blocks/*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
         js: 'src/blocks/*.js',//В стилях и скриптах нам понадобятся только main файлы
-        style: 'src/blocks/**/*.less',
-        img: 'src/blocks/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
-        fonts: 'src/blocks/**/fonts/*.*'
+        style: 'src/blocks/*.less',
+        img: 'src/blocks/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
         html: 'src/blocks/*.html',
         js: 'src/blocks/*.js',
         style: 'src/blocks/**/*.less',
         img: 'src/blocks/**/*.*',
-        fonts: 'src/blocks/**/fonts/*.*'
     },
     clean: './build'
 };
