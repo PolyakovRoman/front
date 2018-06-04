@@ -4,15 +4,15 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
-    sass = require('gulp-sass'),
+    less = require('gulp-less'),
     sourcemaps = require('gulp-sourcemaps'),
     rigger = require('gulp-rigger'),
     cssmin = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     rimraf = require('rimraf'),
-    browserSync = require("browser-sync"),
-    reload = browserSync.reload;
+    flatten = require('gulp-flatten'),
+    browserSync = require("browser-sync");
 
 var path = {
     build: { //Тут мы укажем куда складывать готовые после сборки файлы
@@ -26,13 +26,13 @@ var path = {
         html: 'src/blocks/*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
         js: 'src/blocks/*.js',//В стилях и скриптах нам понадобятся только main файлы
         style: 'src/blocks/*.less',
-        img: 'src/blocks/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
+        img: 'src/blocks/**/img/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
         html: 'src/blocks/*.html',
         js: 'src/blocks/*.js',
-        style: 'src/blocks/**/*.less',
-        img: 'src/blocks/**/*.*',
+        style: 'src/blocks/*.less',
+        img: 'src/blocks/header/img/*.*',
     },
     clean: './build'
 };
@@ -40,14 +40,27 @@ var path = {
 gulp.task('html', function () {
     gulp.src(path.src.html) //Выберем файлы по нужному пути
         .pipe(rigger()) //Прогоним через rigger
-        .pipe(gulp.dest(path.build.html)); //И перезагрузим наш сервер для обновлений
+        .pipe(gulp.dest(path.build.html));
 });
 
 gulp.task('js', function () {
     gulp.src(path.src.js) //Найдем наш main файл
         .pipe(rigger()) //Прогоним через rigger
-        .pipe(sourcemaps.init()) //Инициализируем sourcemap
         .pipe(uglify()) //Сожмем наш js
-        .pipe(sourcemaps.write()) //Пропишем карты
-        .pipe(gulp.dest(path.build.js)); //И перезагрузим сервер
+        .pipe(gulp.dest(path.build.js));
+});
+
+gulp.task('style', function () {
+    gulp.src(path.src.style)
+        .pipe(sourcemaps.init()) //То же самое что и с js
+        .pipe(less()) //Скомпилируем
+        .pipe(prefixer()) //Добавим вендорные префиксы
+        .pipe(cssmin()) //Сожмем
+        .pipe(gulp.dest(path.build.css)); //И в build
+});
+
+gulp.task('images', function () {
+    gulp.src(path.src.img) //Выберем наши картинки
+        .pipe(flatten({ includeParents: 0 }))
+        .pipe(gulp.dest(path.build.img)); //И бросим в build
 });

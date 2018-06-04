@@ -1,7 +1,8 @@
 /*
  * Third party
  */
-//= ../../bower_components/jquery/dist/jquery.js
+
+//= other-script/jquery.js
 
 /*
  * Custom
