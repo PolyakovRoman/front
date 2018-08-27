@@ -28,7 +28,7 @@ if(blockName) {
         // Нет ошибки, поехали!
         else {
 
-            let dirImgPath = 'src/blocks/' + blockName + '/img/'; // полный путь к создаваемой папке блока
+            let dirImgPath = 'src/blocks/' + blockName + '/img/';
             mkdirp(dirImgPath, function(err){
                 if(err){
                     console.log("Ошибка создания папки IMG в " + blockName);
@@ -49,14 +49,14 @@ if(blockName) {
 
                 // Если это LESS
                 if(extention == 'less') {
-                    styleFileImport = '@import \'./src/blocks/' + blockName + '/' + blockName + '.less\';';
+                    styleFileImport = '@import \'' + blockName + '/' + blockName + '.less\';';
                     fileContent = '// Для импорта в диспетчер подключений: ' + styleFileImport + '\n\n\n.' + blockName + ' {\n  \n}\n';
                     fileCreateMsg = 'Для импорта стилей: ' + styleFileImport;
                 }
 
                 // Если это JS
                 else if(extention == 'js') {
-                    fileContent = '// (function(){\n// код\n// }());\n';
+                    fileContent = '// $(document).ready(function(){\n// код\n// });\n';
                 }
 
                 // Создаем файл, если он еще не существует
