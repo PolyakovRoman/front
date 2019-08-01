@@ -15,6 +15,9 @@ var gulp = require('gulp'),
     cache = require('gulp-cache'),
     autoprefixer = require('gulp-autoprefixer');
 
+//Значения: (переключение между обычным html и шаблонизатором pag)
+// html - будет гульпить из папки html
+// pug - будет гульпить из папки pug используя шаблонизатор pug
 var html = 'html';
 
 var path = {
@@ -43,34 +46,37 @@ var path = {
     }
 };
 
-gulp.task('html', function () {
-    gulp.src(path.src.html)
-        .pipe(rigger())
-        .pipe(gulp.dest(path.build.html));
-});
+if(html == "html"){
+    gulp.task('html', function () {
+        gulp.src(path.src.html)
+            .pipe(rigger())
+            .pipe(gulp.dest(path.build.html));
+    });
+}
 
-gulp.task('pug', function(){
-    var options = {
-        indentSize: 2,
-        unformatted: [
-            // https://www.w3.org/TR/html5/dom.html#phrasing-content
-            'abbr', 'area', 'b', 'bdi', 'bdo', 'br', 'cite',
-            'code', 'data', 'datalist', 'del', 'dfn', 'em', 'embed', 'i', 'ins', 'kbd', 'keygen', 'map', 'mark', 'math', 'meter', 'noscript',
-            'object', 'output', 'progress', 'q', 'ruby', 's', 'samp', 'small',
-            'strong', 'sub', 'sup', 'template', 'time', 'u', 'var', 'wbr', 'text',
-            'acronym', 'address', 'big', 'dt', 'ins', 'strike', 'tt'
-        ]
+if(html == "pug") {
+    gulp.task('pug', function () {
+        var options = {
+            indentSize: 2,
+            unformatted: [
+                // https://www.w3.org/TR/html5/dom.html#phrasing-content
+                'abbr', 'area', 'b', 'bdi', 'bdo', 'br', 'cite',
+                'code', 'data', 'datalist', 'del', 'dfn', 'em', 'embed', 'i', 'ins', 'kbd', 'keygen', 'map', 'mark', 'math', 'meter', 'noscript',
+                'object', 'output', 'progress', 'q', 'ruby', 's', 'samp', 'small',
+                'strong', 'sub', 'sup', 'template', 'time', 'u', 'var', 'wbr', 'text',
+                'acronym', 'address', 'big', 'dt', 'ins', 'strike', 'tt'
+            ]
 
-    };
+        };
 
-    return gulp.src(path.src.pug)
-    .pipe(pug({
-        locals: 'src/pug/**/**/*.pug'
-    }))
-    .pipe(htmlbeautify(options))
-    .pipe(gulp.dest(path.build.html));
-});
-
+        return gulp.src(path.src.pug)
+            .pipe(pug({
+                locals: 'src/pug/**/**/*.pug'
+            }))
+            .pipe(htmlbeautify(options))
+            .pipe(gulp.dest(path.build.html));
+    });
+}
 
 gulp.task('js', function(){
     gulp.src(path.src.js)
