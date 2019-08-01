@@ -1,0 +1,42 @@
+@import 'vars.less';
+
+.button {
+    display: inline-block;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    &_white-big {
+        position: relative;
+        width: 100%;
+        border: 4px solid @color-white;
+        background-color: transparent;
+        padding: 58px 0;
+        font-weight: 750;
+        font-size: 10px;
+        line-height: 31px;
+        letter-spacing: 1.07143px;
+        text-transform: uppercase;
+        color: @color-white;
+        // transition: all @transition-main;
+        &::before {
+        content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: @color-white;
+            transform: scale(0);
+            // transition: all @transition-main;
+        }
+        &:hover {
+            border: 4px solid @color-black;
+            color: @color-blue;
+            &::before {
+                transform: scale(1);
+            }
+        }
+    }
+}

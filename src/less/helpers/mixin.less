@@ -1,0 +1,42 @@
+@import '../settings/vars.less';
+
+.size(@width, @height: @width) {
+    width:  @width;
+    height: @height;
+}
+
+.pseudo(@content: '') {
+    content: @content;
+    display: block;
+    position: absolute;
+}
+
+.alignCenter(@left: 50%, @top: 50%, @translateX: -50%, @translateY: -50%){
+    position: absolute;
+    top: @top;
+    left: @left;
+    transform: translate(@translateX, @translateY);
+}
+
+.background-img(@title-img, @type-img, @position: center center, @b-size: cover, @repeat: no-repeat) {
+    position: absolute;
+    z-index: -10;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('@{path-img}/@{title-img}.@{type-img}') @position;
+    background-size: @b-size;
+    background-repeat: @repeat;
+}
+
+.background-color(@color) {
+    position: absolute;
+    z-index: -10;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: @color;
+}
+

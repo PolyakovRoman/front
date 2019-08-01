@@ -1,0 +1,17 @@
+{
+  "name": "libs",
+  "description": "libs",
+  "main": "index.js",
+  "authors": [
+    "strager"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}
