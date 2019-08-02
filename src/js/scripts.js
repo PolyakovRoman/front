@@ -1,1 +1,1 @@
-//= blocks/test.js
+//=require blocks/test.js

@@ -4,7 +4,6 @@ var gulp = require('gulp'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
     less = require('gulp-less'),
-    rigger = require('gulp-rigger'),
     htmlbeautify = require('gulp-html-beautify'),
     pug = require('gulp-pug'),
     browserSync = require('browser-sync'),
@@ -13,7 +12,11 @@ var gulp = require('gulp'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     cache = require('gulp-cache'),
-    autoprefixer = require('gulp-autoprefixer');
+    autoprefixer = require('gulp-autoprefixer'),
+    notify = require('gulp-notify'),
+    fileinclude = require('gulp-file-include'),
+    include = require('gulp-include'),
+    plumber = require('gulp-plumber');
 
 //Значения: (переключение между обычным html и шаблонизатором pag)
 // html - будет гульпить из папки html
@@ -47,9 +50,13 @@ var path = {
 };
 
 if(html == "html"){
+
+    var onError = function(err) {notify.onError({title:"HTML",message:"Error: <%= error.message %>"})(err);this.emit('end');};
+
     gulp.task('html', function () {
         gulp.src(path.src.html)
-            .pipe(rigger())
+            .pipe(plumber({errorHandler: onError}))
+            .pipe(fileinclude())
             .pipe(gulp.dest(path.build.html));
     });
 }
@@ -69,7 +76,10 @@ if(html == "pug") {
 
         };
 
+        var onError = function(err) {notify.onError({title:"PUG",message:"Error: <%= error.message %>"})(err);this.emit('end');};
+
         return gulp.src(path.src.pug)
+            .pipe(plumber({errorHandler: onError}))
             .pipe(pug({
                 locals: 'src/pug/**/**/*.pug'
             }))
@@ -79,15 +89,23 @@ if(html == "pug") {
 }
 
 gulp.task('js', function(){
-    gulp.src(path.src.js)
-        .pipe(rigger())
+
+    var onError = function(err) {notify.onError({title:"JS",message:"Error: <%= error.message %>"})(err);this.emit('end');};
+
+    return gulp.src(path.src.js)
+        .pipe(plumber({errorHandler: onError}))
+        .pipe(include())
         .pipe(uglify())
         .pipe(gulp.dest(path.build.js));
 
 });
 
 gulp.task('less',function(){
+
+    var onError = function(err) {notify.onError({title:"LESS",message:"Error: <%= error.message %>"})(err);this.emit('end');};
+
     return gulp.src(path.src.style)
+    .pipe(plumber({errorHandler: onError}))
     .pipe(autoprefixer(['last 15 versions', '>1%', 'ie 8', 'ie 7'], {cascade: true}))
     .pipe(less())
     .pipe(prefixer())
@@ -97,7 +115,11 @@ gulp.task('less',function(){
 });
 
 gulp.task('img', function(){
+
+    var onError = function(err) {notify.onError({title:"IMG",message:"Error: <%= error.message %>"})(err);this.emit('end');};
+
     return gulp.src(path.src.img)
+    .pipe(plumber({errorHandler: onError}))
     .pipe(cache(imagemin({
         interlaced: true,
         progressive: true,
