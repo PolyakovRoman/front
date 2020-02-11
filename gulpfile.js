@@ -2,7 +2,7 @@
 
 var gulp = require('gulp'),
     prefixer = require('gulp-autoprefixer'),
-    uglify = require('gulp-uglify'),
+    uglify = require('gulp-uglify-es').default,
     less = require('gulp-less'),
     htmlbeautify = require('gulp-html-beautify'),
     pug = require('gulp-pug'),
